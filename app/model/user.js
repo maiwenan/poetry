@@ -65,7 +65,7 @@ module.exports = app => {
         salt,
       } = this;
 
-      return encryptPassword(password, salt);
+      this.password = encryptPassword(password, salt);
     },
 
     verifyPassword(password) {
