@@ -3,8 +3,8 @@
 const ErrorService = require('../base/error-service');
 
 class UserService extends ErrorService {
-  constructor() {
-    super();
+  constructor(options) {
+    super(options);
     const model = this.ctx.model;
 
     this.User = model.User;
