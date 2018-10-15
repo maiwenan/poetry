@@ -3,6 +3,9 @@
 module.exports = appInfo => {
   const config = exports = {};
 
+  // 生成用户 token 的私钥
+  config.secret = 'mhaw';
+
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1538276287202_1013';
 

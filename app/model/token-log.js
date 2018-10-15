@@ -24,5 +24,5 @@ module.exports = app => {
     },
   });
 
-  return mongoose.model('TokenList', schema);
+  return mongoose.model('TokenLog', schema);
 };

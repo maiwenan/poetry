@@ -28,7 +28,7 @@ module.exports = app => {
       unique: true,
       trim: true,
       required: [ true, 'phone is required' ],
-      match: [ /\d{11}/, 'phone formatter is error' ],
+      match: [ /^\d{11}$/, 'phone formatter is error' ],
     },
     introduction: {
       type: String,
@@ -46,12 +46,12 @@ module.exports = app => {
       default() {
         return Date.now().toString();
       },
-      status: {
-        type: Number,
-        default: 1,
-        // 0 for delete, 1 for nomal
-        enum: [ 0, 1 ],
-      },
+    },
+    status: {
+      type: Number,
+      default: 1,
+      // 0 for delete, 1 for nomal
+      enum: [ 0, 1 ],
     },
   }, {
     toJSON: { virtuals: true, getters: true },

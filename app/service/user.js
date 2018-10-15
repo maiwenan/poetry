@@ -8,12 +8,14 @@ class UserService extends ErrorService {
     const model = this.ctx.model;
 
     this.User = model.User;
+    this.tokenLog = this.ctx.service.tokenLog;
+    this.secretProjection = '-password -salt';
   }
 
   /**
-   * create new user
-   * @param {User} user user info
-   * @return {User} new user object
+   * 创建新用户
+   * @param {User} user 用户信息对象
+   * @return {User} 新用户信息对象
    */
   async create(user) {
     const { User } = this;
@@ -30,15 +32,111 @@ class UserService extends ErrorService {
       this.handleMongooseError(err);
     }
 
-    // do not expose password
+    // 去掉用户密码和加密盐
     user.password = undefined;
     user.salt = undefined;
     return user;
   }
 
+  /**
+   * 注册新用户
+   * @param {User} user 用户信息
+   * @return {User} 带 token 用户信息
+   */
   async register(user) {
+    const { tokenLog } = this;
+    let userObj = null;
+
     user = await this.create(user);
+    userObj = user.toJSON();
+    userObj.token = user.jwtSign();
+
+    // 存储用户登录凭证
+    await tokenLog.create(userObj.id, userObj.token);
+
+    return userObj;
+  }
+
+  /**
+   * 通过手机号查询登录账户信息
+   * @param {String} phone 用户手机号
+   * @return {User} 登录账户信息
+   */
+  async findAccount(phone) {
+    const { User } = this;
+    const conditions = {
+      phone,
+      status: {
+        $ne: 0,
+      },
+    };
+    let user = null;
+
+    try {
+      user = await User.find({}).findOne(conditions).exec();
+    } catch (err) {
+      this.handleMongooseError(err);
+    }
+
     return user;
+  }
+
+  /**
+   * 通过 id 查找用户
+   * @param {String} id 用户id
+   * @return {User} 用户信息
+   */
+  async findById(id) {
+    const {
+      User,
+      secretProjection,
+    } = this;
+    let user = null;
+
+    try {
+      user = await User.findById(id, secretProjection).exec();
+    } catch (err) {
+      this.handleMongooseError(err);
+    }
+
+    return user;
+  }
+
+  /**
+   * 根据用户名查询用户列表，支持模糊查询
+   * @param {String} nameword 用户名
+   * @param {Number} page 页码
+   * @param {Number} pageSize 每页条数
+   * @return {Array} 匹配的用户列表
+   */
+  async findByName(nameword = '', page, pageSize) {
+    const {
+      User,
+      secretProjection,
+    } = this;
+    const nameRe = new RegExp(nameword, 'i');
+    const condition = {
+      username: {
+        $regex: nameRe,
+      },
+      status: {
+        $ne: 0,
+      },
+    };
+    let users = [];
+
+    try {
+      const query = User.find({}, secretProjection)
+        .find(condition)
+        .skip((page - 1) * pageSize)
+        .limit(pageSize);
+
+      users = await query.exec();
+    } catch (err) {
+      this.handleMongooseError(err);
+    }
+
+    return users;
   }
 }
 
