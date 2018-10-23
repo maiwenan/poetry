@@ -4,7 +4,6 @@ const { app } = require('egg-mock/bootstrap');
 const Mock = require('mockjs');
 const enhancer = require('./enhancer');
 const { Random } = Mock;
-module.exports = enhancer(module.exports);
 
 exports.tokenLog = (tokenLog = {}) => {
   const userId = exports.id();
@@ -35,3 +34,5 @@ exports.createTokenLog = async () => {
 
   return tokenLogs[0];
 };
+
+module.exports = enhancer(module.exports, 'TokenLog');

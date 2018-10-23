@@ -4,7 +4,6 @@ const { app } = require('egg-mock/bootstrap');
 const Mock = require('mockjs');
 const Random = Mock.Random;
 const enhancer = require('./enhancer');
-module.exports = enhancer(module.exports);
 
 exports.user = (user = {}) => {
   const phone = exports.phone();
@@ -38,3 +37,5 @@ exports.createUser = async () => {
 
   return users[0];
 };
+
+module.exports = enhancer(module.exports, 'User');

@@ -29,6 +29,26 @@ class CategoryService extends ErrorService {
   }
 
   /**
+   * 更新分类
+   * @param {Category} category 分类信息
+   * @return {Object} 更新结果
+   */
+  async update(category) {
+    const { Category } = this;
+    const query = {
+      _id: category.id,
+    };
+
+    try {
+      await Category.findOneAndUpdate(query, category).exec();
+    } catch (err) {
+      this.handleMongooseError(err);
+    }
+
+    return true;
+  }
+
+  /**
    * 查询所有分类
    * @return {Array} 返回所有分类信息
    */

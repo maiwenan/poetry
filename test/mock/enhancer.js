@@ -3,32 +3,50 @@
 const Mock = require('mockjs');
 const { app } = require('egg-mock/bootstrap');
 const { Random } = Mock;
-const enhancer = {};
 
-enhancer.loop = function(fn, times) {
-  const result = [];
+module.exports = (mock, modelName) => {
+  const enhancer = {};
 
-  for (let i = 0; i < times; i++) {
-    result.push(fn());
-  }
+  enhancer.loop = function(fn, times) {
+    const result = [];
 
-  return result;
-};
+    for (let i = 0; i < times; i++) {
+      result.push(fn());
+    }
 
-enhancer.id = () => {
-  return app.mongoose.Types.ObjectId().toString();
-};
+    return result;
+  };
 
-enhancer.phone = () => {
-  return Mock.mock({
-    phone: /\d{11}/,
-  }).phone;
-};
+  enhancer.id = () => {
+    return app.mongoose.Types.ObjectId().toString();
+  };
 
-enhancer.url = () => {
-  return `https://${Random.domain()}`;
-};
+  enhancer.phone = () => {
+    return Mock.mock({
+      phone: /\d{11}/,
+    }).phone;
+  };
 
-module.exports = mock => {
+  enhancer.url = () => {
+    return `https://${Random.domain()}`;
+  };
+
+  enhancer.createEntities = async (times, md) => {
+    const ctx = app.mockContext();
+    const Model = ctx.model[modelName];
+    const entities = enhancer.loop(() => {
+      let entity = mock[modelName.toLowerCase()]();
+
+      entity = new Model(entity);
+      if (md) {
+        entity = md(entity);
+      }
+      return entity;
+    }, times);
+    const result = await Model.create(entities);
+
+    return result;
+  };
+
   return Object.assign(mock, enhancer);
 };

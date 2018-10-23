@@ -34,6 +34,11 @@ module.exports = app => {
       type: Number,
       default: 0,
     },
+    // 0 表示公开，1表示自己可看
+    privacy: {
+      type: Number,
+      default: 0,
+    },
     categoryIds: {
       type: [ String ],
       required: [ function() {
