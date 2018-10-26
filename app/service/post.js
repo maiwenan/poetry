@@ -20,7 +20,6 @@ class PostService extends ErrorService {
     let {
       userId,
       tags,
-      tagIds = [],
     } = post;
 
     tags = tags.map(name => {
@@ -32,11 +31,6 @@ class PostService extends ErrorService {
 
     // 保存新的 tag
     tags = await this.ctx.service.tag.batchCreate(tags);
-    tags.forEach(({ id }) => {
-      tagIds.push(id);
-    });
-    post.tagIds = tagIds;
-    delete post.tags;
 
     try {
       post = await Post.create(new Post(post));

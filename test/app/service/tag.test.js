@@ -25,6 +25,17 @@ describe('test/app/service/tag.test.js', () => {
     });
   });
 
+  describe('batchCreate', () => {
+    it('批量新增标签成功', async () => {
+      const ctx = app.mockContext();
+      const tags = mock.tags();
+      const tag = await ctx.service.tag.create(tags[0]);
+      const result = await ctx.service.tag.batchCreate(tags);
+
+      assert(tag.id !== undefined);
+      assert(result.length === 5);
+    });
+  });
 
   describe('findAll', () => {
     it('查询所有标签成功', async () => {

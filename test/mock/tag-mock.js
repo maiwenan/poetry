@@ -13,6 +13,10 @@ exports.tag = (category = {}) => {
   }, category);
 };
 
+exports.tags = (times = 5) => {
+  return exports.loop(exports.tag, times);
+};
+
 exports.createTags = async (times = 5) => {
   return exports.createEntities(times);
 };

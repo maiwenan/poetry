@@ -45,7 +45,7 @@ module.exports = app => {
         return !this.categoryIds.length;
       }, 'category is required' ],
     },
-    tagIds: [ String ],
+    tags: [ String ],
     status: {
       type: Number,
       default: 1,

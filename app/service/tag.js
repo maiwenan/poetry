@@ -21,17 +21,30 @@ class TagService extends ErrorService {
     return tags[0];
   }
 
+  /**
+   * 批量保存标签
+   * @param {Array} tags 标签集
+   * @return {Array} 保存后的标签集
+   */
   async batchCreate(tags) {
     const { Tag } = this;
+    const result = [];
 
-    tags = tags.map(tag => new Tag(tag));
     try {
-      tags = await Tag.create(tags);
+      for (let i = 0; i < tags.length; i++) {
+        const tag = tags[i];
+        let temp = await Tag.findOne().exec();
+
+        if (!temp) {
+          temp = await Tag.create(tag);
+        }
+        result.push(temp);
+      }
     } catch (err) {
       this.handleMongooseError(err);
     }
 
-    return tags;
+    return result;
   }
 
   /**
