@@ -9,7 +9,7 @@ exports.tokenLog = (tokenLog = {}) => {
   const userId = exports.id();
 
   return Object.assign({
-    userId,
+    user: userId,
     token: Random.string(12),
   }, tokenLog);
 };

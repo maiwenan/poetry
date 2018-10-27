@@ -17,13 +17,13 @@ describe('test/app/service/token-log.test.js', () => {
     it('存储token成功', async () => {
       const ctx = app.mockContext();
       const {
-        userId,
+        user,
         token,
       } = mock.tokenLog();
-      const tokenLog = await ctx.service.tokenLog.create(userId, token);
+      const tokenLog = await ctx.service.tokenLog.create(user, token);
 
       assert(tokenLog.id !== undefined);
-      assert(tokenLog.userId === userId);
+      assert(tokenLog.user === user);
       assert(tokenLog.token === token);
     });
   });

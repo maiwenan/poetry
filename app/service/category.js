@@ -49,6 +49,28 @@ class CategoryService extends ErrorService {
   }
 
   /**
+   * 删除 category （假删）
+   * @param {String} id category 的 id
+   * @return {Boolean} 是否删除成功
+   */
+  async disabledCategory(id) {
+    const { Category } = this;
+    const query = {
+      _id: id,
+    };
+
+    try {
+      await Category.findOneAndUpdate(query, {
+        status: 0,
+      }).exec();
+    } catch (err) {
+      this.handleMongooseError(err);
+    }
+
+    return true;
+  }
+
+  /**
    * 查询所有分类
    * @return {Array} 返回所有分类信息
    */

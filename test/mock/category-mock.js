@@ -8,7 +8,7 @@ exports.category = (category = {}) => {
   const userId = exports.id();
 
   return Object.assign({
-    userId,
+    user: userId,
     name: Random.cname(),
     description: Random.sentence(),
   }, category);

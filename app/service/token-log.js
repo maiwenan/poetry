@@ -19,7 +19,7 @@ class TokenLogService extends ErrorService {
   async create(userId, token) {
     const { TokenLog } = this;
     let tokenLog = new TokenLog({
-      userId,
+      user: userId,
       token,
     });
 

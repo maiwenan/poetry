@@ -7,10 +7,10 @@
 module.exports = app => {
   const { mongoose } = app;
   const schema = new mongoose.Schema({
-    userId: {
+    user: {
       type: String,
       index: true,
-      required: [ true, 'userId is required' ],
+      required: [ true, 'user is required' ],
     },
     title: {
       type: String,
@@ -39,11 +39,9 @@ module.exports = app => {
       type: Number,
       default: 0,
     },
-    categoryIds: {
-      type: [ String ],
-      required: [ function() {
-        return !this.categoryIds.length;
-      }, 'category is required' ],
+    category: {
+      type: String,
+      ref: 'Category',
     },
     tags: [ String ],
     status: {

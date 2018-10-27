@@ -4,13 +4,13 @@ const Mock = require('mockjs');
 const enhancer = require('./enhancer');
 const { Random } = Mock;
 
-exports.tag = (category = {}) => {
+exports.tag = (tag = {}) => {
   const userId = exports.id();
 
   return Object.assign({
-    userId,
+    user: userId,
     name: Random.cname(),
-  }, category);
+  }, tag);
 };
 
 exports.tags = (times = 5) => {
