@@ -6,6 +6,8 @@ const {
   assert,
 } = require('egg-mock/bootstrap');
 const mock = require('../../mock/post-mock');
+const categoryMock = require('../../mock/category-mock');
+const userMock = require('../../mock/user-mock');
 
 
 describe('test/app/service/post.test.js', () => {
