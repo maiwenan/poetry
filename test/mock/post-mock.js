@@ -9,7 +9,7 @@ exports.post = (post = {}) => {
 
   return Object.assign({
     user: userId,
-    title: Random.title(),
+    title: Random.csentence(10),
     pictureUrls: [
       `https://${Random.domain()}`,
       `https://${Random.domain()}`,

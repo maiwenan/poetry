@@ -92,7 +92,7 @@ class PostService extends ErrorService {
       this.handleMongooseError(err);
     }
 
-    return posts[0];
+    return posts[0] || null;
   }
 
   /**
