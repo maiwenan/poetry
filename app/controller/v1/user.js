@@ -1,8 +1,8 @@
 'use strict';
 
-const Controller = require('egg').Controller;
+const BaseController = require('../../base/base-controller');
 
-class UserController extends Controller {
+class UserController extends BaseController {
   async create() {
 
   }
@@ -23,6 +23,7 @@ class UserController extends Controller {
     const userId = ctx.params.id;
     const user = await service.user.findById(userId);
 
+    this.echo(user);
   }
 
   async index() {

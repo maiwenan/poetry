@@ -10,8 +10,12 @@ class ErrorService extends Service {
   handleMongooseError(error) {
     let status = 500;
     const message = error.message;
+    const err400 = [
+      'ValidationError',
+      'CastError',
+    ];
 
-    if (error.name === 'ValidationError') {
+    if (err400.indexOf(error.name) !== -1) {
       status = 400;
     }
 
