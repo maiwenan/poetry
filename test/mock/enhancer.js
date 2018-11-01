@@ -31,11 +31,11 @@ module.exports = (mock, modelName) => {
     return `https://${Random.domain()}`;
   };
 
-  enhancer.createEntities = async (times, md) => {
+  enhancer.createEntities = async (times, defEntity, md) => {
     const ctx = app.mockContext();
     const Model = ctx.model[modelName];
     const entities = enhancer.loop(() => {
-      let entity = mock[modelName.toLowerCase()]();
+      let entity = mock[modelName.toLowerCase()](defEntity);
 
       entity = new Model(entity);
       if (md) {

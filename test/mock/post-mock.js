@@ -28,12 +28,12 @@ exports.posts = (times = 5) => {
   return exports.loop(exports.post, times);
 };
 
-exports.createPosts = async (times = 5) => {
-  return exports.createEntities(times);
+exports.createPosts = async (times = 5, post = {}) => {
+  return exports.createEntities(times, post);
 };
 
-exports.createPost = async () => {
-  const result = await exports.createPosts(1);
+exports.createPost = async (post = {}) => {
+  const result = await exports.createPosts(1, post);
 
   return result[0];
 };

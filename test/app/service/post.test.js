@@ -44,15 +44,101 @@ describe('test/app/service/post.test.js', () => {
   describe('findById', () => {
     it('根据 id 查询 post 成功', async () => {
       const ctx = app.mockContext();
-      const post = await mock.createPost();
-      const newPost = await ctx.service.post.findById(post.id);
-      await ctx.service.post.disabledPost(newPost.id);
-      const result = await ctx.service.post.findById(newPost.id);
+      const category = await categoryMock.createCategory();
+      const user = await userMock.createUser();
+      const post = await ctx.service.post.create(mock.post({
+        user: user.id,
+        category: category.id,
+      }));
+      const result = await ctx.service.post.findById(post.id);
 
-      console.log(post);
-      assert(post.id === newPost.id);
-      assert(newPost.status === 1);
+      assert(post.id === result.id);
+      assert(user.id === result.user.id);
+      assert(category.id === result.category.id);
+      assert(result.status === 1);
+    });
+
+    it('根据 id 查询已假删的 post ，查询不到', async () => {
+      const ctx = app.mockContext();
+      const category = await categoryMock.createCategory();
+      const user = await userMock.createUser();
+      const post = await ctx.service.post.create(mock.post({
+        user: user.id,
+        category: category.id,
+        status: 0,
+      }));
+      const result = await ctx.service.post.findById(post.id);
+
       assert(result === null);
+    });
+  });
+
+  describe('findByUser', () => {
+    it('查找某个用户的所有 post ，成功', async () => {
+      const ctx = app.mockContext();
+      const { Post } = ctx.model;
+      await Post.deleteMany().exec();
+
+      const user1 = await userMock.createUser();
+      await mock.createPosts(5, {
+        user: user1.id,
+      });
+      const user2 = await userMock.createUser();
+      await mock.createPosts(5, {
+        user: user2.id,
+      });
+
+      let result = await ctx.service.post.findByUser(user1.id, 1, 3);
+
+      assert(result.length === 3);
+      assert(result[0].user.id === user1.id);
+
+      result = await ctx.service.post.findByUser(user2.id, 2, 3);
+
+      assert(result.length === 2);
+      assert(result[0].user.id === user2.id);
+    });
+  });
+
+  describe('findByUser', () => {
+    it('查找某个用户的所有 post ，成功', async () => {
+      const ctx = app.mockContext();
+      const { Post } = ctx.model;
+      await Post.deleteMany().exec();
+
+      const user1 = await userMock.createUser();
+      await mock.createPosts(5, {
+        user: user1.id,
+      });
+      const user2 = await userMock.createUser();
+      await mock.createPosts(5, {
+        user: user2.id,
+      });
+
+      let result = await ctx.service.post.findByUser(user1.id, 1, 3);
+      assert(result.length === 3);
+      assert(result[0].user.id === user1.id);
+
+      result = await ctx.service.post.findByUser(user2.id, 2, 3);
+      assert(result.length === 2);
+      assert(result[0].user.id === user2.id);
+    });
+  });
+
+  describe('findAll', () => {
+    it('查找所有的 post ，成功', async () => {
+      const ctx = app.mockContext();
+      const { Post } = ctx.model;
+      await Post.deleteMany().exec();
+      const posts = await mock.createPosts(20);
+
+      let result = await ctx.service.post.findAll({}, 1, 10);
+      assert(result.length === 10);
+
+      result = await ctx.service.post.findAll({
+        title: posts[0].title,
+      }, 1, 10);
+      assert(result.length === 1);
     });
   });
 });

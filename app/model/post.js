@@ -11,6 +11,7 @@ module.exports = app => {
       type: String,
       index: true,
       required: [ true, 'user is required' ],
+      ref: 'User',
     },
     title: {
       type: String,

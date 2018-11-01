@@ -4,6 +4,7 @@
   "description": "poetoetic listry",
   "private": true,
   "dependencies": {
+    "dotenv": "^6.1.0",
     "egg": "^2.2.1",
     "egg-mongoose": "^3.1.0",
     "egg-passport": "^2.0.1",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "autod": "^3.0.1",
     "autod-egg": "^1.0.0",
+    "cross-env": "^5.2.0",
     "egg-bin": "^4.3.5",
     "egg-ci": "^1.8.0",
     "egg-mock": "^3.14.0",
@@ -27,13 +29,14 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-poetry",
+    "start": "EGG_SERVER_ENV=prod egg-scripts start --daemon --title=egg-server-poetry",
+    "start-sit": "EGG_SERVER_ENV=sit egg-scripts start --daemon --title=egg-server-poetry",
     "stop": "egg-scripts stop --title=egg-server-poetry",
-    "dev": "egg-bin dev",
-    "debug": "egg-bin debug",
+    "dev": "cross-env EGG_SERVER_ENV=local egg-bin dev",
+    "debug": "cross-env EGG_SERVER_ENV=local egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
-    "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
+    "test-local": "cross-env EGG_SERVER_ENV=unittest egg-bin test",
+    "cov": "cross-env EGG_SERVER_ENV=unittest egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod"
