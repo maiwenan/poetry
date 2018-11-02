@@ -36,5 +36,12 @@ module.exports = appInfo => {
     },
   };
 
+  config.onerrors = {
+    json(err, ctx) {
+      ctx.body = err;
+      ctx.status = 500;
+    },
+  };
+
   return config;
 };
