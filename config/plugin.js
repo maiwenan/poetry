@@ -18,3 +18,9 @@ exports.mongoose = {
   enabled: true,
   package: 'egg-mongoose',
 };
+
+// params validate
+exports.validate = {
+  enable: true,
+  package: 'egg-validate',
+};

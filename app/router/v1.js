@@ -20,4 +20,6 @@ module.exports = app => {
   router.get('/api/v1/users/:id', user.show);
   // 搜索用户
   router.post('/api/v1/users', user.index);
+  // 登录验证
+  router.post('/api/v1/authorize', user.authorize);
 };

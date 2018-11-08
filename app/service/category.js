@@ -30,13 +30,14 @@ class CategoryService extends ErrorService {
 
   /**
    * 更新分类
+   * @param {String} id 分类 ID
    * @param {Category} category 分类信息
    * @return {Object} 更新结果
    */
-  async update(category) {
+  async update(id, category) {
     const { Category } = this;
     const query = {
-      _id: category.id,
+      _id: id,
     };
 
     try {

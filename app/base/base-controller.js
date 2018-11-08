@@ -3,12 +3,21 @@
 const Controller = require('egg').Controller;
 
 class BaseController extends Controller {
+  /**
+   * 解析请求参数
+   * @param {Object} params 请求参数对象
+   * @param {String} fields 需要提取的字段
+   * @param {String} spliter 字段分割符
+   * @return {Object} 返回所需的参数对象
+   */
   parse(params, fields = '', spliter = /\s+/) {
     const result = {};
 
     fields = fields.split(spliter);
-    fields.forEach(field => {
-      result[field] = params[field];
+    Object.keys(params).forEach(field => {
+      if (fields.indexOf(field) !== -1) {
+        result[field] = params[field];
+      }
     });
 
     return result;
@@ -19,7 +28,9 @@ class BaseController extends Controller {
   }
 
   assertError(error, status = 400) {
-    this.assert(!error, status, error.message, { error });
+    const message = error && error.message;
+
+    this.assert(!error, status, message, { error });
   }
 
   /**

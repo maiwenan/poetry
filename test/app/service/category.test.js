@@ -31,10 +31,9 @@ describe('test/app/service/category.test.js', () => {
       const { Category } = ctx.model;
       const category = await mock.createCategory();
       const temp = {
-        id: category.id,
         name: 'test-update',
       };
-      await ctx.service.category.update(temp);
+      await ctx.service.category.update(category.id, temp);
       const result = await Category.findById(category.id).exec();
 
       assert(result.name === temp.name);

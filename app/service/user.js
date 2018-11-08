@@ -58,6 +58,30 @@ class UserService extends ErrorService {
   }
 
   /**
+   * 修改用户信息
+   * @param {String} userId 用户 id
+   * @param {Object} info 用户信息
+   * @return {Boolean} 是否修改成功
+   */
+  async update(userId, info) {
+    const { User } = this;
+    const query = {
+      _id: userId,
+    };
+    let result = null;
+
+    try {
+      info = this.projectFields(info, 'password salt');
+      // info.updateAt = new Date();
+      result = await User.findOneAndUpdate(query, info).exec();
+    } catch (err) {
+      this.handleMongooseError(err);
+    }
+
+    return !!result;
+  }
+
+  /**
    * 通过手机号查询登录账户信息
    * @param {String} phone 用户手机号
    * @return {User} 登录账户信息

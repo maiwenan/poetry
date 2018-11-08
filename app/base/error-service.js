@@ -3,6 +3,17 @@
 const { Service } = require('egg');
 
 class ErrorService extends Service {
+  projectFields(data, fields = '', spliter = /\s+/) {
+    const result = Object.assign({}, data);
+
+    fields = fields.split(spliter);
+    fields.forEach(field => {
+      delete result[field];
+    });
+
+    return result;
+  }
+
   handleServerError(error) {
     this.ctx.throw(500, error.message, { error });
   }

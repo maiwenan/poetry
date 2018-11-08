@@ -22,9 +22,16 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = COOKIE_KEYS;
 
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+  };
+
   // add your config here
   config.middleware = [];
 
+  // mongodb database
   config.mongoose = {
     url: DB_URL,
     options: {

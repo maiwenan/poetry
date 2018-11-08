@@ -44,6 +44,23 @@ describe('test/app/service/user.test.js', () => {
     });
   });
 
+  describe('update', () => {
+    it('更新用户信息成功', async () => {
+      const ctx = app.mockContext();
+      const { User } = ctx.model;
+      const user = await mock.createUser();
+      const temp = {
+        username: 'test-update',
+      };
+      const s = await ctx.service.user.update(user.id, temp);
+      const result = await User.findById(user.id).exec();
+
+      console.log(s, '-----------');
+      assert(s !== null);
+      assert(result.username === temp.username);
+    });
+  });
+
   describe('findAccount', () => {
     it('成功找到账户', async () => {
       const user = await mock.createUser();
