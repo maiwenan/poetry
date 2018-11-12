@@ -29,7 +29,10 @@ module.exports = appInfo => {
   };
 
   // add your config here
-  config.middleware = [];
+  config.middleware = [ 'cors' ];
+  config.cors = {
+
+  };
 
   // mongodb database
   config.mongoose = {

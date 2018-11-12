@@ -66,7 +66,7 @@ class UserController extends BaseController {
       },
     });
 
-    const userId = '';
+    const userId = this.user.id;
     const params = this.parse(request.body, 'username introduction');
     const bool = await service.user.update(userId, params);
 
@@ -80,6 +80,15 @@ class UserController extends BaseController {
       ctx,
       service,
     } = this;
+
+    this.ctx.validate({
+      id: {
+        type: 'string',
+        required: false,
+        allowEmpty: false,
+      },
+    });
+
     const userId = ctx.params.id;
     const user = await service.user.findById(userId);
 

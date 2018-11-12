@@ -4,6 +4,16 @@ const Controller = require('egg').Controller;
 
 class BaseController extends Controller {
   /**
+   * 当前用户
+   * 依赖 `./middleware/authorize.js` 实现
+   * @readonly
+   * @memberof ApiController
+   */
+  get user() {
+    return this.ctx.request.user;
+  }
+
+  /**
    * 解析请求参数
    * @param {Object} params 请求参数对象
    * @param {String} fields 需要提取的字段
